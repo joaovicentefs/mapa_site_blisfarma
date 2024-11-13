@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Blisfarma</title>
+    <script src="https://unpkg.com/@panzoom/panzoom/dist/panzoom.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.6.1/mermaid.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@popperjs/core@2"></script>
+    <script src="https://unpkg.com/tippy.js@6"></script>
+    <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/dist/tippy.css"/>
+    
+    <style>
+        /* Container principal ajustado */
+        .main-container {
+            display: flex;
+            height: 100vh;
+            padding: 2rem;
+            gap: 2rem;
+        }
+
+        /* Sidebar ajustada para altura total */
+        .sidebar {
+            width: 320px;
+            background: white;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+            height: calc(100vh - 4rem); /* Altura total menos o padding do container */
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Container do conteúdo principal */
+        .content-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: white;
+            border-radius: 0.75rem;
+            padding: 2rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+            height: calc(100vh - 4rem); /* Altura total menos o padding do container */
+        }
+
+        /* Container do Mermaid com altura flexível */
+        #mermaid-container {
+            background-color: white !important;
+            flex: 1;
+            min-height: 0; /* Importante para permitir que o flex funcione corretamente */
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #panzoom-wrapper {
+            flex: 1;
+            min-height: 0; /* Importante para permitir que o flex funcione corretamente */
+        }
+
+        /* Configurações dos nós Mermaid */
+        #mermaid-container .node rect { 
+            fill-opacity: 1 !important; 
+        }
+
+        #mermaid-container .nodeLabel { 
+            color: inherit !important; 
+        }
+
+        #mermaid-container .edgePath .path {
+            stroke: #333 !important;
+            stroke-width: 1px !important;
+        }
+
+        #mermaid-container .edgeLabel { 
+            background-color: white !important; 
+        }
+
+        #mermaid-container .cluster-label { 
+            fill: transparent !important; 
+        }
+
+        #mermaid-container .cluster rect {
+            fill: white !important;
+            stroke: none !important;
+        }
+
+        #mermaid-container .label { 
+            font-family: 'Inter', sans-serif !important; 
+        }
+
+        #Diagrama_Principal rect {
+            fill: transparent !important;
+            stroke: none !important;
+        }
+
+        .mermaid {
+            background-color: white !important;
+            height: 100%;
+        }
+
+        /* Legendas */
+        .legends-container {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        }
+
+        /* Tooltip */
+        .tooltip {
+            visibility: hidden;
+            position: absolute;
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 8px;
+            border-radius: 4px;
+            font-size: 14px;
+            max-width: 300px;
+            z-index: 1000;
+        }
+
+        .legend-item:hover .tooltip {
+            visibility: visible;
+        }
+
+        /* Ajustes de scroll */
+        body {
+            margin: 0;
+            overflow: hidden;
+        }
+
+        /* Grid da legenda mais compacto */
+        .legend-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 0.5rem;
+        }
+        .info_add {
+            font-size: 13px;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50">
+    <div class="main-container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="flex justify-center mb-6">
+                <img src="https://upsites.digital/wp-content/uploads/2023/01/logo.png" alt="UpSites Logo" class="w-40 h-auto"/>
+            </div>
+            
+            <h2 class="text-xl font-bold mb-4 text-gray-800">Informações adicionais:</h2>
+            <div class="text-gray-600 flex-1">
+                <p class="info_add">
+<ul>
+    <li class="info_add">Pensando na melhor experiẽncia do usuário acreditamos que essas deveriam deixar de existir no site:</li>
+<li class="info_add">Institucional: Ela era apenas uma página para mandar pas as duas outras páginas (Sobre nós e Cerficiações) por isso ela vai ser apenas um item de menu</li>
+<li class="info_add">Medicamentos e Alimentos: Os "entregáveis de vocês" são os subitens destes menus, por isso eles só serão listados como item de menu. O Conteṹdo de fato fica nas páginas abaixo delas.</li>
+<li class="info_add">Trabalhe conosco: Era uma página muito curta que pode ser agregada na página de contado.</li>
+<li class="info_add">Endereços: Os Endereços não precisam de uma página dedicada. Vamos colocar os endereços no rodapé do site em todas as páginas</li>
+<li class="info_add">A página de contato fica sendo como a única onde se pede orçamento e também pode se enviar currículo para vagas</li>
+</ul>
+<br>
+<strong>Outras notas relevantes</strong>:<br>
+<ul>
+    <li class="info_add">Acredito que apesar do site não ser de página ùnica a a home do site deve ser mais longa e completa do que como está no site atual, sendo um resumo de todas as páginas internas.</li>
+<li class="info_add">Na página de nossos serviços vamos falar um pouco de cada serviço especializado de vocês, e ainda vamos ter uma página para cada um deles. Isso tem impacto positivo no SEO de vocês.</li>
+</ul>
+                </p>
+            </div>
+        </div>
+
+        <!-- Container Principal -->
+        <div class="content-container">
+            <div id="mermaid-container" class="border border-gray-100 rounded-lg">
+                <div id="panzoom-wrapper" class="cursor-grab active:cursor-grabbing" style="transform-origin: 0 0;">
+                    <div class="mermaid">
+                        ---
+                        config:
+                            flowchart:
+                                curve: basis
+                                padding: 20
+                        ---
+                        flowchart TD
+                        %% Configuração de links e curvas mais suaves
+                        linkStyle default stroke-width:1px,stroke:#333
+                        
+                        %% Diagrama Principal (Sem borda)
+                        subgraph Diagrama_Principal["Blisfarma"]
+                            direction TB
+                            %% Nó principal invisível
+                            Cliente( ):::invisible
+                            
+                            %% Primeiro nível
+                            Cliente~~~m1(Home):::pagInclusa
+                            Cliente~~~m2(Institucional):::nep
+                            Cliente~~~m3(Medicamentos):::nep
+                            Cliente~~~m4(Alimentos):::nep
+                            Cliente~~~m5(Nossos serviços):::pagInclusa
+                            Cliente~~~m6(Contato):::pagextramd
+                        
+                            %% Subseção Institucional
+                            m2-->m2_1(Sobre nós):::pagInclusa
+                            m2-->m2_2(Certificações):::pagInclusa
+                        
+                            %% Subseção Medicamentos
+                            m3-->m3_1(Hormônios):::pagextramd
+                            m3_1-->m3_2(Antibióticos):::pagextrafl
+                        
+                            %% Subseção Alimentos
+                            m4-->m4_1(Suplementos):::pagextramd
+                        
+                            %% Subseção Serviços
+                            m5-->m5_1(Full Service):::pagextramd
+                            m5_1-->m5_2(Terc. M. de obra):::pagextrafl
+                            m5_2-->m5_3(Serv. regulatórios):::pagextrafl
+                            m5_3-->m5_4(Prodt. Registrado):::pagextrafl
+                            m5_4-->m5_5(Hosp. de Marca):::pagextrafl
+                        end
+                        
+                        %% Estilos dos nós
+                        classDef invisible fill:none,stroke:none
+                        classDef default fill:#d2d2d2,stroke-width:0px,rx:4px
+                        classDef pagInclusa fill:#ffe800,stroke-width:0px,color:#000,rx:4px
+                        classDef nep fill:#f2f2f2,stroke:#000,color:#000,stroke-width:1px,rx:4px
+                        classDef linkexterno fill:#ffffff,stroke:#d2d2d2,stroke-width:1px,color:#000,rx:4px,stroke-dasharray:5 5
+                        classDef cpt fill:#c903c9,color:#fff,rx:4px
+                        classDef blog fill:#ff9900,color:#fff,rx:4px
+                        classDef pagextracp fill:#cc0000,color:#fff,rx:4px
+                        classDef pagextramd fill:#4a86e8,color:#fff,rx:4px
+                        classDef pagextrasp fill:#45818e,color:#fff,rx:4px
+                        classDef pagextrafl fill:#93c47d,color:#fff,rx:4px
+                        
+                        %% Remover borda do diagrama principal
+                        classDef titulo_mapa font-size:20px,font-weight:bold,fill:transparent,stroke:none
+                        class Diagrama_Principal titulo_mapa
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-sm text-gray-600 text-center mt-2">
+                🖱️ Arraste para mover o diagrama | Ctrl + Scroll do mouse para zoom
+            </div>
+
+            <!-- Legenda mais compacta -->
+            <div class="legends-container">
+                <div class="legend-grid">
+                    <div class="legend-item relative flex items-center gap-2" data-tippy-content="Página que faz parte do orçamento base.">
+                        <div class="w-4 h-4 rounded" style="background-color: #ffe800"></div>
+                        <span class="text-sm">Página Inclusa</span>
+                    </div>
+
+                    <div class="legend-item relative flex items-center gap-2" data-tippy-content="Não é contabilizada como página e nem é cobrada. Mas é listada no menu.">
+                        <div class="w-4 h-4 rounded bg-white border border-dashed border-gray-300"></div>
+                        <span class="text-sm">Link Externo</span>
+                    </div>
+
+                    <div class="legend-item relative flex items-center gap-2" data-tippy-content="Não é contabilizada como página e nem é cobrada. Mas é listada no menu.">
+                        <div class="w-4 h-4 rounded" style="background-color: #f2f2f2; border: 1px solid #000"></div>
+                        <span class="text-sm">Item de Menu</span>
+                    </div>
+
+                    <div class="legend-item relative flex items-center gap-2" data-tippy-content="Considere o &quot;Custom Post Type&quot; (CPT) como um modelo de conteúdo especializado. Em um site de fotografia, por exemplo, você poderia criar um CPT chamado &quot;Galeria&quot; para organizar e exibir imagens. Cada CPT possui campos e opções de personalização próprios, facilitando a gestão e criação de páginas similares.
+                    ">
+                        <div class="w-4 h-4 rounded" style="background-color: #c903c9"></div>
+                        <span class="text-sm">Custom Post Type</span>
+                    </div>
+
+                    <div class="legend-item relative flex items-center gap-2" data-tippy-content="Recurso para publicação de conteúdo atualizado no site. Ele permite criar e organizar posts com texto, imagens e links, geralmente exibidos em ordem cronológica. Cada post tem campos específicos, como título, autor e data, facilitando a criação e a gestão de novos conteúdos, além de contribuir para manter o site dinâmico e atrair visitantes.">
+                        <div class="w-4 h-4 rounded" style="background-color: #ff9900"></div>
+                        <span class="text-sm">Blog</span>
+                    </div>
+
+                    <div class="legend-item relative flex items-center gap-2" data-tippy-content="Página adicional ao projeto com mais complexidade visual ou funcional.">
+                        <div class="w-4 h-4 rounded" style="background-color: #cc0000"></div>
+                        <span class="text-sm">Página Complexa</span>
+                    </div>
+
+                    <div class="legend-item relative flex items-center gap-2" data-tippy-content="Página adicional ao projeto com alguns recursos funcionais ou visuais.">
+                        <div class="w-4 h-4 rounded" style="background-color: #4a86e8"></div>
+                        <span class="text-sm">Página Média</span>
+                    </div>
+
+                    <div class="legend-item relative flex items-center gap-2" data-tippy-content="Página adicional ao projeto mas com recursos visuais e funcionais mais simples.">
+                        <div class="w-4 h-4 rounded" style="background-color: #45818e"></div>
+                        <span class="text-sm">Página Simples</span>
+                    </div>
+
+                    <div class="legend-item relative flex items-center gap-2" data-tippy-content="Página adicional ao projeto que é derivada de uma outra página com estrutura e tamaho similar, sendo modificado o seu conteúdo. ">
+                        <div class="w-4 h-4 rounded" style="background-color: #93c47d"></div>
+                        <span class="text-sm">Página Filho</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        window.addEventListener('load', function () {
+            mermaid.initialize({ 
+                startOnLoad: true,
+                flowchart: {
+                    curve: 'basis',
+                    padding: 20
+                }
+            });
+
+            // Inicialização dos tooltips
+            tippy('.legend-item', {
+                content: (reference) => reference.getAttribute('data-tippy-content'),
+                placement: 'top',
+                arrow: true,
+                theme: 'custom',
+                maxWidth: 300,
+            });
+
+            // Inicialização do Panzoom
+            setTimeout(() => {
+                const element = document.getElementById('panzoom-wrapper');
+                
+                const panzoom = Panzoom(element, {
+                    maxScale: 2.5,
+                    minScale: 0.75,
+                    step: 0.03,
+                    zoomSpeed: 0.05,
+                    smoothScale: true,
+                    beforeWheel: function(e) {
+                        if (!e.ctrlKey) return true;
+                        e.preventDefault();
+                        return false;
+                    }
+                });
+
+                element.addEventListener('wheel', function(e) {
+                    if (!e.ctrlKey) return;
+                    e.preventDefault();
+                    const delta = e.deltaY;
+                    
+                    if (delta > 0) {
+                        panzoom.zoomOut(null, { step: 0.15 });
+                    } else {
+                        panzoom.zoomIn(null, { step: 0.15 });
+                    }
+                });
+            }, 1000);
+        });
+    </script>
+</body>
+</html>
